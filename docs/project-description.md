@@ -15,6 +15,10 @@ Many gym apps are either overloaded with social features and subscriptions, or t
 - **Workout log**: save sessions with exercises, sets, reps and weights.
 - **History**: browse past workouts.
 
+## Tech Stack
+
+- React Native (Expo with TypeScript)
+
 ## Exercise data
 
 The exercise catalog uses the open-source [ExerciseDB API](https://github.com/ExerciseDB/exercisedb-api). It provides exercise names, body parts, target muscles, equipment, demo media and instructions.
