@@ -37,10 +37,19 @@ The user sets their weight in the profile and picks a workout intensity.
 
 ## Roadmap
 
+### Must
+
 - Project setup and navigation
-- Exercise catalog with caching
+- Exercise catalog
 - Active workout screen with rep counter
-- Workout and rest timers
+- Workout stopwatch and configurable rest timer
 - Calorie estimation and user profile
 - Workout history
-- Workout templates, progress charts, personal records
+
+### Optional
+
+- User authentication and cloud sync
+- Leaderboard and social features
+- Smartwatch integration and accelerometer auto-rep counting
+- Workout templates
+- Progress charts and personal records 
