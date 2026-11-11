@@ -21,9 +21,9 @@ Many gym apps are either overloaded with social features and subscriptions, or t
 
 ## Exercise data
 
-The exercise catalog uses the open-source [ExerciseDB API](https://github.com/ExerciseDB/exercisedb-api). It provides exercise names, body parts, target muscles, equipment, demo media and instructions.
+The exercise catalog uses the open-source, public-domain [free-exercise-db](https://github.com/yuhonas/free-exercise-db) dataset (800+ exercises). It provides exercise names, primary and secondary muscles, equipment, level, category, demo images and instructions. Body parts are derived from the target muscles.
 
-Fetched data is cached locally, and all API calls go through a single service module, so the data source can be changed or self-hosted later without touching the UI.
+The dataset is a single static JSON file, so there are no API keys and no rate limits. It is downloaded once, cached locally and searched/filtered on the device, so the catalog keeps working offline. All data access goes through a single service module, so the data source can be changed or self-hosted later without touching the UI.
 
 ## Calorie estimation
 
