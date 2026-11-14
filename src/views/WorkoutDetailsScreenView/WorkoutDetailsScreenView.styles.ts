@@ -15,6 +15,7 @@ export function createWorkoutDetailsScreenViewStyles(
     container: {
       padding: SPACING.LG,
       gap: SPACING.LG,
+      paddingBottom: SPACING.XXL,
     },
     title: {
       color: colors.TEXT,
