@@ -5,6 +5,7 @@ import type { ColorValue, ViewStyle } from 'react-native';
 
 export type RootNavigatorStyles = {
   loadingContainer: ViewStyle;
+  headerLeftButton: ViewStyle;
 };
 
 export type StackScreenOptions = ComponentProps<typeof Stack>['screenOptions'];

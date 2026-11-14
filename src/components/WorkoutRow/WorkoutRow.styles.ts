@@ -14,7 +14,7 @@ export function createWorkoutRowStyles(colors: Colors): WorkoutRowStyles {
       alignItems: 'center',
       gap: SPACING.MD,
       padding: SPACING.LG,
-      borderRadius: RADIUS.MD,
+      borderRadius: RADIUS.LG,
       borderWidth: StyleSheet.hairlineWidth,
       backgroundColor: colors.CARD,
       borderColor: colors.BORDER,

@@ -12,7 +12,7 @@ export function showAlert(title: string, message: string): void {
 }
 
 export function confirmAction(options: ConfirmActionOptions): void {
-  const { title, message, confirmText, isDestructive, onConfirm } = options;
+  const { title, message, confirmText, cancelText = 'Cancel', isDestructive, onConfirm } = options;
 
   if (Platform.OS === 'web') {
     if (typeof globalThis.confirm === 'function') {
@@ -24,7 +24,7 @@ export function confirmAction(options: ConfirmActionOptions): void {
   }
 
   Alert.alert(title, message, [
-    { text: 'Cancel', style: 'cancel' },
+    { text: cancelText, style: 'cancel' },
     {
       text: confirmText,
       style: isDestructive ? 'destructive' : 'default',

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Exercise, Profile, Workout, WorkoutSet } from '@/lib/types';
+import type { Exercise, Profile, Routine, Workout, WorkoutSet } from '@/lib/types';
 
 export type AppStoreProviderProps = {
   children: ReactNode;
@@ -13,7 +13,8 @@ export type Store = {
 
   updateProfile: (patch: Partial<Profile>) => void;
 
-  startWorkout: () => void;
+  startEmptyWorkout: () => boolean;
+  startWorkoutFromRoutine: (routine: Routine) => boolean;
   discardWorkout: () => void;
   finishWorkout: () => Workout | null;
   togglePause: () => void;
@@ -24,6 +25,7 @@ export type Store = {
   addSet: (workoutExerciseId: string) => void;
   updateSet: (workoutExerciseId: string, setId: string, patch: Partial<WorkoutSet>) => void;
   removeSet: (workoutExerciseId: string, setId: string) => void;
+  toggleExerciseAllSetsDone: (workoutExerciseId: string) => void;
 
   deleteWorkout: (workoutId: string) => void;
 };

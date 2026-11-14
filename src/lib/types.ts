@@ -35,6 +35,7 @@ export type WorkoutExercise = {
 export type Workout = {
   id: string;
   name: string;
+  routineId?: string;
   startedAt: number;
   endedAt: number | null;
   accumulatedMs: number; // Elapsed time before current segment (excludes pauses)
@@ -44,6 +45,29 @@ export type Workout = {
   bodyWeightKg: number | null;
   calories: number;
   durationMs: number;
+};
+
+export type RoutineExercise = {
+  id: string;
+  exerciseId: string;
+  name: string; // Snapshot of exercise name so routines work offline
+  bodyPart: string | null;
+  target: string | null;
+  equipment: string | null;
+  setCount: number;
+};
+
+export type Routine = {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  exercises: RoutineExercise[];
+};
+
+export type RoutineDraft = {
+  name: string;
+  exercises: RoutineExercise[];
 };
 
 export type Profile = {

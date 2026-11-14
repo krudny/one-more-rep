@@ -4,7 +4,10 @@ export type HomeScreenViewStyles = {
   container: ViewStyle;
   hello: TextStyle;
   activeCard: ViewStyle;
-  newCard: ViewStyle;
+  routinesSection: ViewStyle;
+  routinesHeader: ViewStyle;
+  routinesList: ViewStyle;
+  statsCard: ViewStyle;
   lastCard: ViewStyle;
   bigTimer: TextStyle;
   mutedText: TextStyle;
