@@ -12,6 +12,7 @@ export function IconButton({
   size = DEFAULT_ICON_SIZE,
   color,
   label,
+  disabled,
   style,
 }: IconButtonProps): ReactElement {
   const colors = useColors();
@@ -20,8 +21,12 @@ export function IconButton({
     <Pressable
       accessibilityLabel={label}
       hitSlop={ICON_BUTTON_HIT_SLOP}
+      disabled={Boolean(disabled)}
       onPress={onPress}
-      style={({ pressed }: PressableStateCallbackType) => [getIconButtonStyle(pressed), style]}
+      style={({ pressed }: PressableStateCallbackType) => [
+        getIconButtonStyle(pressed, Boolean(disabled)),
+        style,
+      ]}
     >
       <Ionicons name={icon} size={size} color={color ?? colors.MUTED} />
     </Pressable>

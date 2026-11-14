@@ -5,6 +5,7 @@ import type { UseStepperParams, UseStepperResult } from './useStepper.types';
 export function useStepper({
   value,
   min,
+  max,
   decimals,
   step,
   onChange,
@@ -18,8 +19,13 @@ export function useStepper({
     }
   }, [value, focused]);
 
+  const clampValue = (rawValue: number): number => {
+    const withMin = Math.max(min, rawValue);
+    return max !== undefined ? Math.min(max, withMin) : withMin;
+  };
+
   const applyValue = (rawValue: number): void => {
-    const nextValue = Math.max(min, Number(rawValue.toFixed(decimals)));
+    const nextValue = clampValue(Number(rawValue.toFixed(decimals)));
     if (nextValue === value) {
       return;
     }
@@ -35,7 +41,7 @@ export function useStepper({
     setText(inputText);
     const parsedNumber = Number(inputText.replace(',', '.'));
     if (inputText.trim() !== '' && !Number.isNaN(parsedNumber)) {
-      onChange(Math.max(min, parsedNumber));
+      onChange(clampValue(parsedNumber));
     }
   };
 

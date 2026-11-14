@@ -6,6 +6,7 @@ export type StepperProps = {
   onChange: (value: number) => void;
   step?: number;
   min?: number;
+  max?: number;
   decimals?: number;
   large?: boolean;
 };

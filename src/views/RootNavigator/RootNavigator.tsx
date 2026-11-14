@@ -24,6 +24,7 @@ export function RootNavigator(): ReactElement {
     <Stack screenOptions={getStackScreenOptions(colors)}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="workout" options={{ title: 'Workout' }} />
+      <Stack.Screen name="routine-editor" options={{ title: 'Routine' }} />
       <Stack.Screen
         name="pick-exercise"
         options={{ title: 'Add exercise', presentation: 'modal' }}

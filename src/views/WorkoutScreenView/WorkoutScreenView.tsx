@@ -14,6 +14,7 @@ import { INTENSITY_LABEL, INTENSITY_LIST, INTENSITY_MET } from '@/lib/calories/c
 import { formatDuration } from '@/lib/format/format';
 import type { Intensity, WorkoutExercise } from '@/lib/types';
 import { useColors } from '@/theme';
+import { PickExerciseTargets } from '@/views/PickExerciseScreenView/PickExerciseScreenView.constants';
 import { KEYBOARD_VERTICAL_OFFSET_IOS } from './WorkoutScreenView.constants';
 import { createWorkoutScreenViewStyles } from './WorkoutScreenView.styles';
 
@@ -112,7 +113,7 @@ export function WorkoutScreenView(): ReactElement | null {
           title="Add exercise"
           icon="add"
           variant={ButtonVariants.SECONDARY}
-          onPress={(): void => router.push('/pick-exercise')}
+          onPress={(): void => router.push(`/pick-exercise?target=${PickExerciseTargets.WORKOUT}`)}
         />
         <Button title="Finish workout" icon="flag" onPress={handleFinishWorkout} />
       </ScrollView>
