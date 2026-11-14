@@ -12,13 +12,14 @@ export function Stepper({
   onChange,
   step = DEFAULT_STEP,
   min = DEFAULT_MIN,
+  max,
   decimals = DEFAULT_DECIMALS,
   large = false,
 }: StepperProps): ReactElement {
   const colors = useColors();
   const styles = createStepperStyles(colors, large);
   const { text, handleFocus, handleBlur, handleChangeText, handleIncrement, handleDecrement } =
-    useStepper({ value, min, decimals, step, onChange });
+    useStepper({ value, min, max, decimals, step, onChange });
 
   return (
     <View style={styles.wrap}>

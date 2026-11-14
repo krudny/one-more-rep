@@ -1,0 +1,1 @@
+export const KEYBOARD_VERTICAL_OFFSET_IOS = 90;

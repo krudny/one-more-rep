@@ -1,6 +1,7 @@
 export type UseStepperParams = {
   value: number;
   min: number;
+  max?: number;
   decimals: number;
   step: number;
   onChange: (value: number) => void;

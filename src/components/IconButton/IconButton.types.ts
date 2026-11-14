@@ -7,5 +7,6 @@ export type IconButtonProps = {
   size?: number;
   color?: string;
   label: string;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
