@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   FlatList,
   ScrollView,
-  Text,
   TextInput,
   View,
   type ListRenderItemInfo,
@@ -88,7 +87,7 @@ export function ExerciseCatalog({
           <TextInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Search exercises"
+            placeholder={total > 0 ? `Search ${total} exercises` : 'Search exercises'}
             placeholderTextColor={colors.MUTED}
             style={styles.searchInput}
             autoCorrect={false}
@@ -133,7 +132,6 @@ export function ExerciseCatalog({
             ))}
           </ScrollView>
         )}
-        {total > 0 && <Text style={styles.totalText}>{total} exercises</Text>}
       </View>
 
       <FlatList

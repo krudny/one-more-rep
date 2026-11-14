@@ -13,7 +13,6 @@ export type ExerciseCatalogStyles = {
   searchBox: ViewStyle;
   searchInput: TextStyle;
   chips: ViewStyle;
-  totalText: TextStyle;
   listContent: ViewStyle;
   footerSpinner: ViewStyle;
 };

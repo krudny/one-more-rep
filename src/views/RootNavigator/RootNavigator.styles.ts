@@ -26,7 +26,6 @@ export function getStackScreenOptions(colors: Colors): StackScreenOptions {
   return {
     headerStyle: { backgroundColor: colors.CARD },
     headerTintColor: colors.TEXT,
-    headerTitleStyle: { fontWeight: '700' },
     headerBackVisible: false,
     contentStyle: { backgroundColor: colors.BACKGROUND },
   };
@@ -39,7 +38,6 @@ export function getTabsScreenOptions(colors: Colors): TabsScreenOptions {
     tabBarStyle: { backgroundColor: colors.CARD, borderTopColor: colors.BORDER },
     headerStyle: { backgroundColor: colors.CARD },
     headerTintColor: colors.TEXT,
-    headerTitleStyle: { fontWeight: '700' },
     headerTitleContainerStyle: { marginHorizontal: SPACING.LG },
     sceneStyle: { backgroundColor: colors.BACKGROUND },
   };

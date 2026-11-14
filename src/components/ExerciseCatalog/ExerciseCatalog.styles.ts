@@ -4,7 +4,6 @@ import type { Colors } from '@/theme/theme.types';
 import type { ExerciseCatalogStyles } from './ExerciseCatalog.types';
 
 const SEARCH_INPUT_FONT_SIZE = 16;
-const COUNT_FONT_SIZE = 12;
 
 export function createExerciseCatalogStyles(colors: Colors): ExerciseCatalogStyles {
   return StyleSheet.create({
@@ -13,7 +12,7 @@ export function createExerciseCatalogStyles(colors: Colors): ExerciseCatalogStyl
     },
     header: {
       padding: SPACING.LG,
-      gap: SPACING.SM,
+      gap: SPACING.LG,
     },
     searchBox: {
       flexDirection: 'row',
@@ -33,11 +32,6 @@ export function createExerciseCatalogStyles(colors: Colors): ExerciseCatalogStyl
     },
     chips: {
       gap: SPACING.SM,
-      paddingVertical: SPACING.XXS,
-    },
-    totalText: {
-      color: colors.MUTED,
-      fontSize: COUNT_FONT_SIZE,
     },
     listContent: {
       padding: SPACING.LG,
