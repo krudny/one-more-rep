@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import { useNow } from '@/hooks/useNow/useNow';
 import { estimateWorkoutCalories } from '@/lib/calories/calories';
-import type { Intensity, WorkoutExercise, WorkoutSet } from '@/lib/types';
+import type { Intensity, WorkoutExercise } from '@/lib/types';
 import { getElapsedMs } from '@/lib/workout/workout';
+import { areAllWorkoutSetsDone } from '@/lib/workoutMutations/workoutMutations';
 import { confirmAction } from '@/services/dialogs/dialogs';
 import { useAppStore } from '@/state/AppStore/AppStore';
 import { useRestTimer } from '@/state/RestTimer/RestTimer';
-import { useNow } from '@/hooks/useNow/useNow';
 import { WORKOUT_CLOCK_INTERVAL_MS } from './useWorkoutScreen.constants';
 import type { UseWorkoutScreenResult } from './useWorkoutScreen.types';
 
@@ -30,27 +31,56 @@ export function useWorkoutScreen(): UseWorkoutScreenResult {
     ? estimateWorkoutCalories(active.intensity, profile.weightKg, elapsedMs)
     : 0;
 
+  const completeAndSaveWorkout = (): void => {
+    restTimer.stop();
+    finishingRef.current = true;
+    const savedWorkout = finishWorkout();
+    if (savedWorkout) {
+      router.replace(`/history/${savedWorkout.id}`);
+    }
+  };
+
   const handleFinishWorkout = (): void => {
     if (!active) {
       return;
     }
-    const hasDoneSets = active.exercises.some((workoutExercise: WorkoutExercise) =>
-      workoutExercise.sets.some((workoutSet: WorkoutSet) => workoutSet.done),
+
+    const hasLoggableExercises = active.exercises.some(
+      (workoutExercise: WorkoutExercise) => workoutExercise.sets.length > 0,
     );
+
+    if (!hasLoggableExercises) {
+      confirmAction({
+        title: 'Nothing to save',
+        message: 'Add at least one exercise before finishing, or discard this workout.',
+        confirmText: 'Discard',
+        cancelText: 'Keep going',
+        isDestructive: true,
+        onConfirm: (): void => {
+          restTimer.stop();
+          discardWorkout();
+        },
+      });
+      return;
+    }
+
+    if (!areAllWorkoutSetsDone(active)) {
+      confirmAction({
+        title: 'Some sets are not done',
+        message: 'Unchecked sets will be saved as skipped. Finish anyway?',
+        confirmText: 'Finish anyway',
+        cancelText: 'Cancel',
+        onConfirm: completeAndSaveWorkout,
+      });
+      return;
+    }
+
     confirmAction({
       title: 'Finish workout?',
-      message: hasDoneSets
-        ? 'Your workout will be saved to history.'
-        : 'No sets are marked as done yet. Save anyway?',
+      message: 'Your workout will be saved to history.',
       confirmText: 'Finish',
-      onConfirm: (): void => {
-        restTimer.stop();
-        finishingRef.current = true;
-        const savedWorkout = finishWorkout();
-        if (savedWorkout) {
-          router.replace(`/history/${savedWorkout.id}`);
-        }
-      },
+      cancelText: 'Cancel',
+      onConfirm: completeAndSaveWorkout,
     });
   };
 

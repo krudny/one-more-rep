@@ -17,15 +17,16 @@ import { createHomeScreenViewStyles } from './HomeScreenView.styles';
 export function HomeScreenView(): ReactElement {
   const colors = useColors();
   const styles = createHomeScreenViewStyles(colors);
-  const { active, workouts, profile, startWorkout } = useAppStore();
+  const { active, workouts, profile, startEmptyWorkout } = useAppStore();
   const nowTimestamp = useNow(HOME_CLOCK_INTERVAL_MS, active !== null);
 
   const weeklySummary = getWeeklyWorkoutSummary(workouts);
   const lastWorkout = workouts[0];
 
   const handleStartWorkout = (): void => {
-    startWorkout();
-    router.push('/workout');
+    if (startEmptyWorkout()) {
+      router.push('/workout');
+    }
   };
 
   return (
