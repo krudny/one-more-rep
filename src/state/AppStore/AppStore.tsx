@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, type ReactElement } from 'react';
 import { usePersistedStoreState } from '@/hooks/usePersistedStoreState/usePersistedStoreState';
-import type { Exercise, Profile, Workout, WorkoutSet } from '@/lib/types';
+import { createWorkoutFromRoutine } from '@/lib/routine/routine';
+import type { Exercise, Profile, Routine, Workout, WorkoutSet } from '@/lib/types';
 import {
   appendExerciseToWorkout,
   appendSetToExercise,
@@ -9,6 +10,7 @@ import {
   mapWorkoutExercise,
   removeExerciseFromWorkout,
   removeWorkoutSet,
+  toggleWorkoutExerciseAllSetsDone,
   toggleWorkoutPause,
   updateWorkoutSet,
 } from '@/lib/workoutMutations/workoutMutations';
@@ -33,17 +35,35 @@ export function AppStoreProvider({ children }: AppStoreProviderProps): ReactElem
     [setProfile],
   );
 
-  const startWorkout = useCallback(
-    (): void =>
-      setActive((current: Workout | null) => current ?? createNewWorkout(profile.defaultIntensity)),
-    [profile.defaultIntensity, setActive],
+  const startEmptyWorkout = useCallback((): boolean => {
+    if (active !== null) {
+      return false;
+    }
+    setActive(createNewWorkout(profile.defaultIntensity));
+    return true;
+  }, [active, profile.defaultIntensity, setActive]);
+
+  const startWorkoutFromRoutine = useCallback(
+    (routine: Routine): boolean => {
+      if (active !== null) {
+        return false;
+      }
+      setActive(createWorkoutFromRoutine(routine, Date.now(), profile.defaultIntensity));
+      return true;
+    },
+    [active, profile.defaultIntensity, setActive],
   );
 
   const discardWorkout = useCallback((): void => setActive(null), [setActive]);
 
   const finishWorkout = useCallback((): Workout | null => {
-    if (!active) return null;
+    if (!active) {
+      return null;
+    }
     const finishedWorkout = buildFinishedWorkout(active, profile.weightKg);
+    if (finishedWorkout.exercises.length === 0) {
+      return null;
+    }
     setWorkouts((workoutList: Workout[]) => [finishedWorkout, ...workoutList]);
     setActive(null);
     return finishedWorkout;
@@ -98,6 +118,14 @@ export function AppStoreProvider({ children }: AppStoreProviderProps): ReactElem
     [updateActiveWorkout],
   );
 
+  const toggleExerciseAllSetsDone = useCallback(
+    (workoutExerciseId: string): void =>
+      updateActiveWorkout((current: Workout) =>
+        toggleWorkoutExerciseAllSetsDone(current, workoutExerciseId),
+      ),
+    [updateActiveWorkout],
+  );
+
   const deleteWorkout = useCallback(
     (workoutId: string): void =>
       setWorkouts((workoutList: Workout[]) =>
@@ -109,7 +137,8 @@ export function AppStoreProvider({ children }: AppStoreProviderProps): ReactElem
   const storeActions = useMemo(
     () => ({
       updateProfile,
-      startWorkout,
+      startEmptyWorkout,
+      startWorkoutFromRoutine,
       discardWorkout,
       finishWorkout,
       togglePause,
@@ -119,11 +148,13 @@ export function AppStoreProvider({ children }: AppStoreProviderProps): ReactElem
       addSet,
       updateSet,
       removeSet,
+      toggleExerciseAllSetsDone,
       deleteWorkout,
     }),
     [
       updateProfile,
-      startWorkout,
+      startEmptyWorkout,
+      startWorkoutFromRoutine,
       discardWorkout,
       finishWorkout,
       togglePause,
@@ -133,6 +164,7 @@ export function AppStoreProvider({ children }: AppStoreProviderProps): ReactElem
       addSet,
       updateSet,
       removeSet,
+      toggleExerciseAllSetsDone,
       deleteWorkout,
     ],
   );
