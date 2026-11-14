@@ -2,15 +2,17 @@ import { Stack } from 'expo-router';
 import type { ReactElement } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useAppStore } from '@/state/AppStore/AppStore';
+import { useRoutinesStore } from '@/state/RoutinesStore/RoutinesStore';
 import { useColors } from '@/theme';
 import { createRootNavigatorStyles, getStackScreenOptions } from './RootNavigator.styles';
 
 export function RootNavigator(): ReactElement {
-  const { ready } = useAppStore();
+  const { ready: appReady } = useAppStore();
+  const { ready: routinesReady } = useRoutinesStore();
   const colors = useColors();
   const styles = createRootNavigatorStyles(colors);
 
-  if (!ready) {
+  if (!appReady || !routinesReady) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator color={colors.PRIMARY} />
