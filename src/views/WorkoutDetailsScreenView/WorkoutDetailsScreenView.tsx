@@ -1,4 +1,4 @@
-import { Stack, router } from 'expo-router';
+import { Stack } from 'expo-router';
 import type { ReactElement } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Button } from '@/components/Button/Button';
@@ -7,12 +7,10 @@ import { Card } from '@/components/Card/Card';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { SectionTitle } from '@/components/SectionTitle/SectionTitle';
 import { Stat } from '@/components/Stat/Stat';
+import { useWorkoutDetailsScreen } from '@/hooks/useWorkoutDetailsScreen/useWorkoutDetailsScreen';
 import { INTENSITY_LABEL, INTENSITY_MET } from '@/lib/calories/calories.constants';
 import { capitalize, formatDate, formatDuration, formatTime } from '@/lib/format/format';
-import type { Workout, WorkoutExercise, WorkoutSet } from '@/lib/types';
-import { getWorkoutStats } from '@/lib/workout/workout';
-import { confirmAction } from '@/services/dialogs/dialogs';
-import { useAppStore } from '@/state/AppStore/AppStore';
+import type { WorkoutExercise, WorkoutSet } from '@/lib/types';
 import { useColors } from '@/theme';
 import { createWorkoutDetailsScreenViewStyles } from './WorkoutDetailsScreenView.styles';
 import type { WorkoutDetailsScreenViewProps } from './WorkoutDetailsScreenView.types';
@@ -22,27 +20,12 @@ export function WorkoutDetailsScreenView({
 }: WorkoutDetailsScreenViewProps): ReactElement {
   const colors = useColors();
   const styles = createWorkoutDetailsScreenViewStyles(colors);
-  const { workouts, deleteWorkout } = useAppStore();
-  const workout = workouts.find((entry: Workout) => entry.id === workoutId);
+  const { workout, stats, canSaveAsRoutine, handleSaveAsRoutine, handleDelete } =
+    useWorkoutDetailsScreen(workoutId);
 
-  if (!workout) {
+  if (!workout || !stats) {
     return <EmptyState icon="alert-circle-outline" title="Workout not found" />;
   }
-
-  const stats = getWorkoutStats(workout);
-
-  const handleDelete = (): void => {
-    confirmAction({
-      title: 'Delete workout?',
-      message: 'This cannot be undone.',
-      confirmText: 'Delete',
-      isDestructive: true,
-      onConfirm: (): void => {
-        router.back();
-        deleteWorkout(workout.id);
-      },
-    });
-  };
 
   return (
     <>
@@ -93,6 +76,15 @@ export function WorkoutDetailsScreenView({
           <Card>
             <SectionTitle>No exercises logged</SectionTitle>
           </Card>
+        )}
+
+        {canSaveAsRoutine && (
+          <Button
+            title="Save as routine"
+            icon="bookmark-outline"
+            variant={ButtonVariants.SECONDARY}
+            onPress={handleSaveAsRoutine}
+          />
         )}
 
         <Button
