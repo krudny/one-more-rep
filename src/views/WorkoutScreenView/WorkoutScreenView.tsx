@@ -71,10 +71,12 @@ export function WorkoutScreenView(): ReactElement | null {
               <Text style={[styles.clock, paused && styles.clockPaused]}>
                 {formatDuration(elapsedMs)}
               </Text>
-              <Text style={styles.mutedText}>
-                ≈ {estimatedCalories} kcal · MET {INTENSITY_MET[active.intensity]} · {bodyWeightKg}{' '}
-                kg
-              </Text>
+              {active.exercises.length > 0 && (
+                <Text style={styles.mutedText}>
+                  ≈ {estimatedCalories} kcal · MET {INTENSITY_MET[active.intensity]} ·{' '}
+                  {bodyWeightKg} kg
+                </Text>
+              )}
             </View>
             <Button
               title={paused ? 'Resume' : 'Pause'}

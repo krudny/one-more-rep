@@ -1,0 +1,7 @@
+export const EXERCISE_CHECKBOX_ICON_SIZE = 24;
+export const EXERCISE_CHECKBOX_HIT_SLOP = 8;
+
+export const EXERCISE_CHECKBOX_OPACITY = {
+  ENABLED: 1,
+  PRESSED: 0.6,
+} as const;

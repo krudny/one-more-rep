@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import type { ReactElement } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { ExerciseCheckbox } from '@/components/ExerciseCheckbox/ExerciseCheckbox';
 import { HowToSection } from '@/components/HowToSection/HowToSection';
 import { Stepper } from '@/components/Stepper/Stepper';
 import { Button } from '@/components/Button/Button';
@@ -28,11 +29,13 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
   const {
     selectedSet,
     selectedIndex,
+    allSetsDone,
     selectSet,
     completeSelectedSet,
     handleAddSet,
     handleUpdateSet,
     handleRemoveSet,
+    handleToggleExerciseDone,
     handleRemoveExercise,
   } = useExerciseLogCard(entry);
 
@@ -44,6 +47,7 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
   return (
     <Card style={styles.card}>
       <View style={styles.header}>
+        <ExerciseCheckbox checked={allSetsDone} onToggle={handleToggleExerciseDone} />
         <Pressable
           style={styles.titleLink}
           onPress={(): void => router.push(`/exercise/${encodeURIComponent(entry.exerciseId)}`)}
