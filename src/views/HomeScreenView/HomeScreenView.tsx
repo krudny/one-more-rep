@@ -1,63 +1,87 @@
-import { router } from 'expo-router';
 import type { ReactElement } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Button } from '@/components/Button/Button';
 import { ButtonVariants } from '@/components/Button/Button.constants';
 import { Card } from '@/components/Card/Card';
+import { EmptyState } from '@/components/EmptyState/EmptyState';
+import { RoutineCard } from '@/components/RoutineCard/RoutineCard';
 import { SectionTitle } from '@/components/SectionTitle/SectionTitle';
 import { Stat } from '@/components/Stat/Stat';
-import { useNow } from '@/hooks/useNow/useNow';
+import { useHomeScreen } from '@/hooks/useHomeScreen/useHomeScreen';
 import { formatDate, formatDuration } from '@/lib/format/format';
-import { getElapsedMs, getWeeklyWorkoutSummary, getWorkoutStats } from '@/lib/workout/workout';
-import { useAppStore } from '@/state/AppStore/AppStore';
+import type { Routine } from '@/lib/types';
+import { getWorkoutStats } from '@/lib/workout/workout';
 import { useColors } from '@/theme';
-import { HOME_CLOCK_INTERVAL_MS } from './HomeScreenView.constants';
 import { createHomeScreenViewStyles } from './HomeScreenView.styles';
 
 export function HomeScreenView(): ReactElement {
   const colors = useColors();
   const styles = createHomeScreenViewStyles(colors);
-  const { active, workouts, profile, startEmptyWorkout } = useAppStore();
-  const nowTimestamp = useNow(HOME_CLOCK_INTERVAL_MS, active !== null);
-
-  const weeklySummary = getWeeklyWorkoutSummary(workouts);
-  const lastWorkout = workouts[0];
-
-  const handleStartWorkout = (): void => {
-    if (startEmptyWorkout()) {
-      router.push('/workout');
-    }
-  };
+  const {
+    active,
+    profileName,
+    routines,
+    weeklySummary,
+    lastWorkout,
+    elapsedMs,
+    handleContinueWorkout,
+    handleStartEmptyWorkout,
+    handleStartRoutine,
+    handleNewRoutine,
+    handleEditRoutine,
+    handleViewWorkoutDetails,
+  } = useHomeScreen();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.hello}>
-        {profile.name ? `Hey ${profile.name}!` : 'Ready for one more rep?'}
+        {profileName ? `Hey ${profileName}!` : 'Ready for one more rep?'}
       </Text>
 
-      {active ? (
+      {active && (
         <Card style={styles.activeCard}>
           <SectionTitle>Workout in progress</SectionTitle>
-          <Text style={styles.bigTimer}>{formatDuration(getElapsedMs(active, nowTimestamp))}</Text>
+          <Text style={styles.bigTimer}>{formatDuration(elapsedMs)}</Text>
           <Text style={styles.mutedText}>
             {active.name} · {active.exercises.length} exercises
             {active.resumedAt === null ? ' · paused' : ''}
           </Text>
-          <Button
-            title="Continue workout"
-            icon="play"
-            onPress={(): void => router.push('/workout')}
-          />
-        </Card>
-      ) : (
-        <Card style={styles.newCard}>
-          <SectionTitle>New workout</SectionTitle>
-          <Text style={styles.mutedText}>
-            Start the stopwatch, add exercises and count your reps.
-          </Text>
-          <Button title="Start workout" icon="flash" onPress={handleStartWorkout} />
+          <Button title="Continue" icon="play" onPress={handleContinueWorkout} />
         </Card>
       )}
+
+      <Button title="Start empty workout" icon="flash" onPress={handleStartEmptyWorkout} />
+
+      <View style={styles.routinesSection}>
+        <View style={styles.routinesHeader}>
+          <SectionTitle>My routines</SectionTitle>
+          <Button
+            title="New routine"
+            icon="add"
+            variant={ButtonVariants.SECONDARY}
+            onPress={handleNewRoutine}
+          />
+        </View>
+
+        {routines.length === 0 ? (
+          <EmptyState
+            icon="list-outline"
+            title="No routines yet"
+            subtitle='Tap "New routine" above to create a reusable workout plan.'
+          />
+        ) : (
+          <View style={styles.routinesList}>
+            {routines.map((routine: Routine) => (
+              <RoutineCard
+                key={routine.id}
+                routine={routine}
+                onStart={handleStartRoutine}
+                onEdit={handleEditRoutine}
+              />
+            ))}
+          </View>
+        )}
+      </View>
 
       <Card>
         <SectionTitle>Last 7 days</SectionTitle>
@@ -79,7 +103,7 @@ export function HomeScreenView(): ReactElement {
           <Button
             title="View details"
             variant={ButtonVariants.SECONDARY}
-            onPress={(): void => router.push(`/history/${lastWorkout.id}`)}
+            onPress={(): void => handleViewWorkoutDetails(lastWorkout.id)}
           />
         </Card>
       )}
