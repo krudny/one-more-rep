@@ -1,0 +1,1 @@
+export const DEFAULT_NOW_INTERVAL_MS = 250;

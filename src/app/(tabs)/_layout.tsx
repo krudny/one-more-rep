@@ -1,30 +1,37 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router/js-tabs';
-import type { ColorValue } from 'react-native';
-import type { IconName } from '@/components/ui';
+import type { ReactElement } from 'react';
+import type { IconName } from '@/components/Button/Button.types';
 import { useColors } from '@/theme';
+import { getTabsScreenOptions } from '@/views/RootNavigator/RootNavigator.styles';
+import type { TabIconProps } from '@/views/RootNavigator/RootNavigator.types';
 
-const icon =
-  (name: IconName) =>
-  ({ color, size }: { color: ColorValue; size: number }) => <Ionicons name={name} color={color as string} size={size} />;
+function renderTabIcon(name: IconName): (props: TabIconProps) => ReactElement {
+  return function TabIcon({ color, size }: TabIconProps): ReactElement {
+    return <Ionicons name={name} color={String(color)} size={size} />;
+  };
+}
 
-export default function TabsLayout() {
-  const c = useColors();
+export default function TabsLayout(): ReactElement {
+  const colors = useColors();
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: c.primary,
-        tabBarInactiveTintColor: c.muted,
-        tabBarStyle: { backgroundColor: c.card, borderTopColor: c.border },
-        headerStyle: { backgroundColor: c.card },
-        headerTintColor: c.text,
-        sceneStyle: { backgroundColor: c.background },
-      }}
-    >
-      <Tabs.Screen name="index" options={{ title: 'Workout', tabBarIcon: icon('barbell') }} />
-      <Tabs.Screen name="exercises" options={{ title: 'Exercises', tabBarIcon: icon('list') }} />
-      <Tabs.Screen name="history" options={{ title: 'History', tabBarIcon: icon('time') }} />
-      <Tabs.Screen name="profile" options={{ title: 'Profile', tabBarIcon: icon('person') }} />
+    <Tabs screenOptions={getTabsScreenOptions(colors)}>
+      <Tabs.Screen
+        name="index"
+        options={{ title: 'Workout', tabBarIcon: renderTabIcon('barbell') }}
+      />
+      <Tabs.Screen
+        name="exercises"
+        options={{ title: 'Exercises', tabBarIcon: renderTabIcon('list') }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{ title: 'History', tabBarIcon: renderTabIcon('time') }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{ title: 'Profile', tabBarIcon: renderTabIcon('person') }}
+      />
     </Tabs>
   );
 }

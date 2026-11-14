@@ -1,0 +1,1 @@
+export const WORKOUT_CLOCK_INTERVAL_MS = 500;

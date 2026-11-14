@@ -14,28 +14,28 @@ A mobile app for tracking gym workouts: count reps, browse an exercise catalog, 
 
 ### Workout
 
-| Home | Active workout | Rest timer | Add exercise |
-| :---: | :---: | :---: | :---: |
+|                              Home                              |                               Active workout                                |                                     Rest timer                                     |                                  Add exercise                                   |
+| :------------------------------------------------------------: | :-------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: |
 | <img src="docs/screenshots/home.png" width="190" alt="Home" /> | <img src="docs/screenshots/workout.png" width="190" alt="Active workout" /> | <img src="docs/screenshots/workout-rest-timer.png" width="190" alt="Rest timer" /> | <img src="docs/screenshots/pick-exercise.png" width="190" alt="Add exercise" /> |
 
-| How to do it | Steps during workout | History | Workout details |
-| :---: | :---: | :---: | :---: |
+|                                   How to do it                                   |                                      Steps during workout                                      |                               History                                |                                   Workout details                                    |
+| :------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
 | <img src="docs/screenshots/workout-how-to.png" width="190" alt="How to do it" /> | <img src="docs/screenshots/workout-how-to-steps.png" width="190" alt="Steps during workout" /> | <img src="docs/screenshots/history.png" width="190" alt="History" /> | <img src="docs/screenshots/history-details.png" width="190" alt="Workout details" /> |
 
 ### Exercise catalog
 
-| Search | Filter: body part | Filter: equipment | Exercise details |
-| :---: | :---: | :---: | :---: |
+|                                    Search                                    |                                       Filter: body part                                       |                                         Filter: equipment                                         |                                    Exercise details                                    |
+| :--------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: |
 | <img src="docs/screenshots/exercises-search.png" width="190" alt="Search" /> | <img src="docs/screenshots/exercises-filter-chest.png" width="190" alt="Filter: body part" /> | <img src="docs/screenshots/exercises-filter-equipment.png" width="190" alt="Filter: equipment" /> | <img src="docs/screenshots/exercise-details.png" width="190" alt="Exercise details" /> |
 
-| Instructions | Instructions: pullups | Profile | Rest timer settings |
-| :---: | :---: | :---: | :---: |
+|                                      Instructions                                       |                                          Instructions: pullups                                           |                               Profile                                |                                      Rest timer settings                                       |
+| :-------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
 | <img src="docs/screenshots/exercise-instructions.png" width="190" alt="Instructions" /> | <img src="docs/screenshots/exercise-instructions-pullups.png" width="190" alt="Instructions: pullups" /> | <img src="docs/screenshots/profile.png" width="190" alt="Profile" /> | <img src="docs/screenshots/profile-rest-settings.png" width="190" alt="Rest timer settings" /> |
 
 ### Dark mode
 
-| Home | Active workout | Exercises | Workout details |
-| :---: | :---: | :---: | :---: |
+|                                Home                                 |                                  Active workout                                  |                                   Exercises                                   |                                      Workout details                                      |
+| :-----------------------------------------------------------------: | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
 | <img src="docs/screenshots/home-dark.png" width="190" alt="Home" /> | <img src="docs/screenshots/workout-dark.png" width="190" alt="Active workout" /> | <img src="docs/screenshots/exercises-dark.png" width="190" alt="Exercises" /> | <img src="docs/screenshots/history-details-dark.png" width="190" alt="Workout details" /> |
 
 _Screenshots and the screencast were captured from the web build (react-native-web) at phone size, with sample workout data._
