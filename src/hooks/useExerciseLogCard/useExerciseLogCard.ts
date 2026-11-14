@@ -1,12 +1,14 @@
 import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
 import type { WorkoutExercise, WorkoutSet } from '@/lib/types';
+import { areAllExerciseSetsDone } from '@/lib/workoutMutations/workoutMutations';
 import { useAppStore } from '@/state/AppStore/AppStore';
 import { useRestTimer } from '@/state/RestTimer/RestTimer';
 import type { UseExerciseLogCardResult } from './useExerciseLogCard.types';
 
 export function useExerciseLogCard(entry: WorkoutExercise): UseExerciseLogCardResult {
-  const { profile, addSet, updateSet, removeSet, removeExercise } = useAppStore();
+  const { profile, addSet, updateSet, removeSet, toggleExerciseAllSetsDone, removeExercise } =
+    useAppStore();
   const restTimer = useRestTimer();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -15,6 +17,7 @@ export function useExerciseLogCard(entry: WorkoutExercise): UseExerciseLogCardRe
     entry.sets.find((workoutSet: WorkoutSet) => !workoutSet.done) ??
     null;
   const selectedIndex = selectedSet ? entry.sets.indexOf(selectedSet) : -1;
+  const allSetsDone = areAllExerciseSetsDone(entry);
 
   const completeSelectedSet = (): void => {
     if (!selectedSet) {
@@ -31,12 +34,14 @@ export function useExerciseLogCard(entry: WorkoutExercise): UseExerciseLogCardRe
   return {
     selectedSet,
     selectedIndex,
+    allSetsDone,
     selectSet: setSelectedId,
     completeSelectedSet,
     handleAddSet: (): void => addSet(entry.id),
     handleUpdateSet: (setId: string, patch: Partial<WorkoutSet>): void =>
       updateSet(entry.id, setId, patch),
     handleRemoveSet: (setId: string): void => removeSet(entry.id, setId),
+    handleToggleExerciseDone: (): void => toggleExerciseAllSetsDone(entry.id),
     handleRemoveExercise: (): void => removeExercise(entry.id),
   };
 }
