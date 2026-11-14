@@ -42,7 +42,8 @@ export function createExerciseCatalogStyles(colors: Colors): ExerciseCatalogStyl
     listContent: {
       padding: SPACING.LG,
       paddingTop: 0,
-      gap: SPACING.SM,
+      paddingBottom: SPACING.XXL,
+      gap: SPACING.MD,
       flexGrow: 1,
     },
     footerSpinner: {

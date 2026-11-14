@@ -83,7 +83,7 @@ export function HomeScreenView(): ReactElement {
         )}
       </View>
 
-      <Card>
+      <Card style={styles.statsCard}>
         <SectionTitle>Last 7 days</SectionTitle>
         <View style={styles.statsRow}>
           <Stat label="Workouts" value={String(weeklySummary.count)} />

@@ -7,6 +7,7 @@ export type HomeScreenViewStyles = {
   routinesSection: ViewStyle;
   routinesHeader: ViewStyle;
   routinesList: ViewStyle;
+  statsCard: ViewStyle;
   lastCard: ViewStyle;
   bigTimer: TextStyle;
   mutedText: TextStyle;

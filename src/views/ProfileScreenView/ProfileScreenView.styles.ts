@@ -11,6 +11,7 @@ export function createProfileScreenViewStyles(colors: Colors): ProfileScreenView
     container: {
       padding: SPACING.LG,
       gap: SPACING.LG,
+      paddingBottom: SPACING.XXL,
     },
     card: {
       gap: SPACING.MD,

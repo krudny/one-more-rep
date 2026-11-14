@@ -47,6 +47,7 @@ export function createRoutineEditorScreenViewStyles(colors: Colors): RoutineEdit
       gap: SPACING.SM,
     },
     headerLeftButton: {
+      marginLeft: SPACING.LG,
       marginRight: SPACING.SM,
     },
   });

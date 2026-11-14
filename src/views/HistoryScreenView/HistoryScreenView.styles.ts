@@ -5,7 +5,8 @@ import type { HistoryScreenViewStyles } from './HistoryScreenView.types';
 export const historyScreenViewStyles: HistoryScreenViewStyles = StyleSheet.create({
   listContent: {
     padding: SPACING.LG,
-    gap: SPACING.SM,
+    paddingBottom: SPACING.XXL,
+    gap: SPACING.MD,
     flexGrow: 1,
   },
 });

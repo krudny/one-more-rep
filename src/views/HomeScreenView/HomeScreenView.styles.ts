@@ -37,6 +37,9 @@ export function createHomeScreenViewStyles(colors: Colors): HomeScreenViewStyles
     routinesList: {
       gap: SPACING.MD,
     },
+    statsCard: {
+      gap: SPACING.SM,
+    },
     lastCard: {
       gap: SPACING.SM,
     },
