@@ -5,10 +5,15 @@ import { Intensities } from '../calories/calories.constants.ts';
 import {
   appendExerciseToWorkout,
   appendSetToExercise,
+  areAllExerciseSetsDone,
+  areAllWorkoutSetsDone,
   buildFinishedWorkout,
   createNewWorkout,
   removeExerciseFromWorkout,
   removeWorkoutSet,
+  setAllExerciseSetsDone,
+  toggleAllExerciseSetsDone,
+  toggleWorkoutExerciseAllSetsDone,
   toggleWorkoutPause,
   updateWorkoutSet,
 } from './workoutMutations.ts';
@@ -109,4 +114,43 @@ test('updateWorkoutSet, removeWorkoutSet and removeExerciseFromWorkout mutate ta
 
   const afterExerciseRemove = removeExerciseFromWorkout(afterSetRemove, 'ex-1');
   assert.equal(afterExerciseRemove.exercises.length, 0);
+});
+
+test('areAllExerciseSetsDone, setAllExerciseSetsDone and toggleWorkoutExerciseAllSetsDone', () => {
+  const workout = createNewWorkout(Intensities.MODERATE);
+  assert.equal(areAllWorkoutSetsDone(workout), false);
+
+  workout.exercises = [
+    {
+      id: 'ex-1',
+      exerciseId: 'bench',
+      name: 'Bench',
+      bodyPart: null,
+      target: null,
+      equipment: null,
+      sets: [
+        { id: 'set-1', reps: 10, weight: 60, done: true },
+        { id: 'set-2', reps: 8, weight: 70, done: false },
+      ],
+    },
+  ];
+
+  assert.equal(areAllExerciseSetsDone(workout.exercises[0]), false);
+  assert.equal(areAllWorkoutSetsDone(workout), false);
+
+  const markedAllDone = toggleWorkoutExerciseAllSetsDone(workout, 'ex-1');
+  assert.equal(areAllExerciseSetsDone(markedAllDone.exercises[0]), true);
+  assert.equal(areAllWorkoutSetsDone(markedAllDone), true);
+
+  const markedAllUndone = toggleWorkoutExerciseAllSetsDone(markedAllDone, 'ex-1');
+  assert.equal(areAllExerciseSetsDone(markedAllUndone.exercises[0]), false);
+  assert.equal(
+    markedAllUndone.exercises[0].sets.every((workoutSet): boolean => !workoutSet.done),
+    true,
+  );
+
+  const directSetDone = setAllExerciseSetsDone(markedAllUndone.exercises[0], true);
+  assert.equal(areAllExerciseSetsDone(directSetDone), true);
+  const toggledBack = toggleAllExerciseSetsDone(directSetDone);
+  assert.equal(areAllExerciseSetsDone(toggledBack), false);
 });
