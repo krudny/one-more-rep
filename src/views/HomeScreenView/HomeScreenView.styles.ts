@@ -13,6 +13,7 @@ export function createHomeScreenViewStyles(colors: Colors): HomeScreenViewStyles
     container: {
       padding: SPACING.LG,
       gap: SPACING.LG,
+      paddingBottom: SPACING.XXL,
     },
     hello: {
       color: colors.TEXT,
@@ -24,7 +25,16 @@ export function createHomeScreenViewStyles(colors: Colors): HomeScreenViewStyles
       borderColor: colors.PRIMARY,
       borderWidth: ACTIVE_CARD_BORDER_WIDTH,
     },
-    newCard: {
+    routinesSection: {
+      gap: SPACING.MD,
+    },
+    routinesHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: SPACING.MD,
+    },
+    routinesList: {
       gap: SPACING.MD,
     },
     lastCard: {
