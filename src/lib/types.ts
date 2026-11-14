@@ -1,18 +1,19 @@
+import type { Intensities } from './calories/calories.constants.ts';
+
+export type Intensity = (typeof Intensities)[keyof typeof Intensities];
+
 export type Exercise = {
   id: string;
   name: string;
-  /** Demo images (start / end position). */
-  images: string[];
+  images: string[]; // Demo images (start / end position)
   bodyParts: string[];
   targetMuscles: string[];
   secondaryMuscles: string[];
   equipments: string[];
   instructions: string[];
-  category?: string;
-  level?: string;
+  category: string | null;
+  level: string | null;
 };
-
-export type Intensity = 'light' | 'moderate' | 'vigorous';
 
 export type WorkoutSet = {
   id: string;
@@ -24,11 +25,10 @@ export type WorkoutSet = {
 export type WorkoutExercise = {
   id: string;
   exerciseId: string;
-  /** Snapshot of exercise data, so history works without the catalog cache. */
-  name: string;
-  bodyPart?: string;
-  target?: string;
-  equipment?: string;
+  name: string; // Snapshot of exercise name so history works offline
+  bodyPart: string | null;
+  target: string | null;
+  equipment: string | null;
   sets: WorkoutSet[];
 };
 
@@ -36,17 +36,14 @@ export type Workout = {
   id: string;
   name: string;
   startedAt: number;
-  endedAt?: number;
-  /** Time accumulated before the current run segment (pauses excluded). */
-  accumulatedMs: number;
-  /** Timestamp of the current run segment start, or null when paused. */
-  resumedAt: number | null;
+  endedAt: number | null;
+  accumulatedMs: number; // Elapsed time before current segment (excludes pauses)
+  resumedAt: number | null; // Current segment start timestamp, or null when paused
   intensity: Intensity;
   exercises: WorkoutExercise[];
-  /** Body weight used for the calorie estimate (kg). */
-  bodyWeightKg?: number;
-  calories?: number;
-  durationMs?: number;
+  bodyWeightKg: number | null;
+  calories: number;
+  durationMs: number;
 };
 
 export type Profile = {
@@ -57,4 +54,17 @@ export type Profile = {
   autoStartRest: boolean;
   restSound: boolean;
   restVibration: boolean;
+};
+
+export type WorkoutStats = {
+  exercises: number;
+  sets: number;
+  reps: number;
+  volume: number;
+};
+
+export type WeeklyWorkoutSummary = {
+  count: number;
+  durationMs: number;
+  calories: number;
 };

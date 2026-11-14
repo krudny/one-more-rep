@@ -1,0 +1,1 @@
+export const HOME_CLOCK_INTERVAL_MS = 1000;

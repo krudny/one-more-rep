@@ -1,37 +1,56 @@
 import { useColorScheme } from 'react-native';
+import type { Colors } from './theme.types';
 
-const palette = {
-  light: {
-    background: '#F4F5F7',
-    card: '#FFFFFF',
-    text: '#15171A',
-    muted: '#6B7280',
-    border: '#E3E5E8',
-    primary: '#FF5A1F',
-    primaryText: '#FFFFFF',
-    success: '#16A34A',
-    danger: '#DC2626',
-    chip: '#ECEDEF',
+const PALETTE = {
+  LIGHT: {
+    BACKGROUND: '#F4F5F7',
+    CARD: '#FFFFFF',
+    TEXT: '#15171A',
+    MUTED: '#6B7280',
+    BORDER: '#E3E5E8',
+    PRIMARY: '#FF5A1F',
+    PRIMARY_TEXT: '#FFFFFF',
+    SUCCESS: '#16A34A',
+    DANGER: '#DC2626',
+    CHIP: '#ECEDEF',
+    TRANSPARENT: 'transparent',
   },
-  dark: {
-    background: '#0E0F11',
-    card: '#1A1C1F',
-    text: '#F3F4F6',
-    muted: '#9CA3AF',
-    border: '#2A2D31',
-    primary: '#FF6B33',
-    primaryText: '#FFFFFF',
-    success: '#22C55E',
-    danger: '#EF4444',
-    chip: '#26292D',
+  DARK: {
+    BACKGROUND: '#0E0F11',
+    CARD: '#1A1C1F',
+    TEXT: '#F3F4F6',
+    MUTED: '#9CA3AF',
+    BORDER: '#2A2D31',
+    PRIMARY: '#FF6B33',
+    PRIMARY_TEXT: '#FFFFFF',
+    SUCCESS: '#22C55E',
+    DANGER: '#EF4444',
+    CHIP: '#26292D',
+    TRANSPARENT: 'transparent',
   },
-};
-
-export type Colors = typeof palette.light;
+} as const;
 
 export function useColors(): Colors {
-  return useColorScheme() === 'dark' ? palette.dark : palette.light;
+  const colorScheme = useColorScheme();
+  if (colorScheme === 'dark') {
+    return PALETTE.DARK;
+  }
+  return PALETTE.LIGHT;
 }
 
-export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 } as const;
-export const radius = { sm: 8, md: 12, lg: 16, pill: 999 } as const;
+export const SPACING = {
+  XXS: 2,
+  XS: 4,
+  SM: 8,
+  MD: 12,
+  LG: 16,
+  XL: 24,
+  XXL: 48,
+} as const;
+
+export const RADIUS = {
+  SM: 8,
+  MD: 12,
+  LG: 16,
+  PILL: 999,
+} as const;

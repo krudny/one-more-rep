@@ -27,16 +27,18 @@ Before declaring any task done: `npm run typecheck`, `npm test` and `npm run for
 
 ```
 src/
-  app/          Expo Router screens only. A file here is a route. No reusable code.
-  components/   One folder per component: Name.tsx, Name.types.ts, Name.styles.ts
-  hooks/        Custom hooks (data loading, timers, screen logic)
-  state/        React Context providers
-  services/     I/O: network (exerciseApi) and device storage (storage)
-  lib/          Pure logic and domain types. No React / React Native imports. Has tests.
+  app/          Expo Router routes only. Each view in its own folder with index.tsx (layouts like _layout.tsx and groups stay). No reusable code.
+  views/        Screen views, one folder per view: Name.tsx, Name.types.ts, Name.styles.ts
+  components/   Reusable UI and domain components, one folder per component
+  hooks/        Custom hooks, one folder per hook: useName.ts, useName.types.ts
+  state/        React Context providers, one folder per provider
+  services/     I/O, one folder per service: name.ts, name.types.ts
+  lib/          Pure logic and domain types, one folder per feature. No React / React Native imports. Has tests.
   theme/        Colors, spacing, radius
 ```
 
 - Use the `@/` alias (maps to `src/`). No `../..` imports.
+- No barrel files or re-exports/forwarding (`export ... from`). Import directly from the destination file that defines the symbol.
 - Exception: files in `src/lib/` import siblings as `./file.ts`, so tests can run in plain Node.
 - Routes live in `src/app/`. Use `Link`, `router`, `useLocalSearchParams` from `expo-router`.
 
@@ -54,21 +56,23 @@ src/
 - Use early returns instead of nested `if`.
 - Do not abstract until something is used in at least two places.
 - Keep functions short and focused on one job. Split a file when it grows beyond roughly 150 lines.
-- Comments explain why, never what. No commented-out code. Prefer no comments. 
+- Comments explain why, never what. No commented-out code. Prefer no comments.
+- If a type field needs a comment, put it inline next to the field (`field: number; // comment`), not above it.
 
 ### Naming
 
 - Never use single-letter or cryptic names, also in callbacks and loops:
   `exercise`, `workout`, `workoutSet`, `index`, not `e`, `w`, `s`, `i`.
 - Components: PascalCase. Functions and variables: camelCase. Constants: UPPER_SNAKE_CASE.
-- Booleans start with `is`, `has`, `should` or `can`. Functions start with a verb.
+- Functions start with a verb.
 - Name files after the main thing they export.
 
 ### Enum-like values
 
 - Never use inline string unions (`'a' | 'b'`) or raw string literals for fixed sets of values.
-- Do not use the `enum` keyword. Use a const object plus a derived type:
+- Do not use the `enum` keyword. Put the const object in `*.constants.ts` and its derived type in `*.types.ts`:
   ```ts
+  // Button.constants.ts
   export const ButtonVariants = {
     PRIMARY: 'PRIMARY',
     SECONDARY: 'SECONDARY',
@@ -76,6 +80,7 @@ src/
     GHOST: 'GHOST',
   } as const;
 
+  // Button.types.ts
   export type ButtonVariant = (typeof ButtonVariants)[keyof typeof ButtonVariants];
   ```
 - Use the constant everywhere: `variant === ButtonVariants.PRIMARY`.
@@ -83,11 +88,11 @@ src/
 
 ### TypeScript
 
-- Types live in separate `.ts` files, never in `.tsx` component files:
-  props in `Name.types.ts`, domain types in `src/lib/types.ts`, constants next to the code that owns them in a `*.constants.ts` file.
+- All `type` declarations live in `*.types.ts` files (or `src/lib/types.ts`), never in `.tsx`, `.styles.ts`, `.constants.ts`, hooks or logic files.
 - No `any`. No `as` casts or `!` unless unavoidable, with a short comment why.
-- Use `type`, not `interface` when possible. 
-- Exported functions have explicit return types.
+- Avoid unnecessary optional `?` operators (`?:` or `?.`) when values always exist or can be explicit `| null`.
+- Use `type`, not `interface` when possible.
+- Exported functions and inline callbacks have explicit parameter and return types.
 
 ### Components
 
