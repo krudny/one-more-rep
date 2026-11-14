@@ -119,3 +119,39 @@ export function removeWorkoutSet(
     sets: workoutExercise.sets.filter((workoutSet: WorkoutSet) => workoutSet.id !== setId),
   }));
 }
+
+export function areAllExerciseSetsDone(workoutExercise: WorkoutExercise): boolean {
+  return (
+    workoutExercise.sets.length > 0 &&
+    workoutExercise.sets.every((workoutSet: WorkoutSet) => workoutSet.done)
+  );
+}
+
+export function setAllExerciseSetsDone(
+  workoutExercise: WorkoutExercise,
+  done: boolean,
+): WorkoutExercise {
+  return {
+    ...workoutExercise,
+    sets: workoutExercise.sets.map((workoutSet: WorkoutSet) => ({
+      ...workoutSet,
+      done,
+    })),
+  };
+}
+
+export function toggleAllExerciseSetsDone(workoutExercise: WorkoutExercise): WorkoutExercise {
+  const nextDone = !areAllExerciseSetsDone(workoutExercise);
+  return setAllExerciseSetsDone(workoutExercise, nextDone);
+}
+
+export function toggleWorkoutExerciseAllSetsDone(
+  workout: Workout,
+  workoutExerciseId: string,
+): Workout {
+  return mapWorkoutExercise(workout, workoutExerciseId, toggleAllExerciseSetsDone);
+}
+
+export function areAllWorkoutSetsDone(workout: Workout): boolean {
+  return workout.exercises.length > 0 && workout.exercises.every(areAllExerciseSetsDone);
+}
