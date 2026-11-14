@@ -1,6 +1,6 @@
 # OneMoreRep
 
-A mobile app for tracking gym workouts: count reps, browse an exercise catalog, estimate burned calories and time your rest. Built with React Native (Expo + TypeScript). See [docs/project-description.md](docs/project-description.md) for the full project description.
+A mobile app for tracking gym workouts: build reusable workout routines, count reps, browse an exercise catalog, estimate burned calories and time your rest. Built with React Native (Expo + TypeScript). See [docs/project-description.md](docs/project-description.md) for the full project description.
 
 ## Demo
 
@@ -59,20 +59,20 @@ npm test
 
 ```
 src/
-  app/                    Expo Router screens
+  app/                    Expo Router routes
     (tabs)/               Workout (home), Exercises, History, Profile
-    workout.tsx           Active workout: stopwatch, rep counter, sets, rest timer
-    pick-exercise.tsx     Exercise picker (modal)
-    exercise/[id].tsx     Exercise details
-    history/[id].tsx      Finished workout details
-  components/             UI components (Stepper, RestTimerBar, ExerciseCatalog, ...)
-  lib/                    Pure logic: types, MET calories, formatting, exercise filtering (+ tests)
-  services/
-    exerciseApi.ts        The only module that talks to the exercise data source
-    storage.ts            AsyncStorage helpers
-  state/
-    AppStore.tsx          Profile, active workout and history (persisted locally)
-    RestTimer.tsx         Rest countdown with sound and vibration
+    workout/              Active workout: stopwatch, rep counter, sets, rest timer
+    routine-editor/       Create and edit reusable workout routines
+    pick-exercise/        Exercise picker (modal, targets workout or routine draft)
+    exercise/[id]/        Exercise details
+    history/[id]/         Finished workout details and save-as-routine action
+  views/                  Screen views (HomeScreenView, WorkoutScreenView, RoutineEditorScreenView, ...)
+  components/             UI & domain components (RoutineCard, RoutineExerciseRow, ExerciseCheckbox, Stepper, ...)
+  hooks/                  Screen and component logic hooks
+  lib/                    Pure logic: routines, workout mutations, MET calories, formatting, exercise filtering (+ tests)
+  services/               AsyncStorage helpers, dialogs, and exercise catalog API
+  state/                  AppStore, RoutinesStore, RoutineDraft, RestTimer
+  theme/                  Colors, spacing, radius
 ```
 
 ## Exercise data

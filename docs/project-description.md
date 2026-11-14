@@ -8,12 +8,13 @@ Many gym apps are either overloaded with social features and subscriptions, or t
 
 ## Features
 
+- **Routines**: create and edit reusable workout plans (exercises and set counts), start a workout from a routine or save any finished workout as a routine.
 - **Rep counter**: count reps per set with large, easy-to-tap controls.
 - **Exercise catalog**: searchable list of exercises, filterable by body part, target muscle and equipment.
 - **Calorie estimation**: approximate calories burned per workout, based on duration, intensity and body weight.
 - **Timer**: workout stopwatch and configurable rest timer with sound and vibration.
-- **Workout log**: save sessions with exercises, sets, reps and weights.
-- **History**: browse past workouts.
+- **Workout log**: save sessions with exercises, sets, reps and weights, plus per-set and per-exercise completion checkboxes.
+- **History**: browse past workouts and save them as routines.
 
 ## Tech Stack
 
@@ -41,6 +42,7 @@ The user sets their weight in the profile and picks a workout intensity.
 
 - Project setup and navigation
 - Exercise catalog
+- Reusable workout routines and explicit workout start
 - Active workout screen with rep counter
 - Workout stopwatch and configurable rest timer
 - Calorie estimation and user profile
@@ -51,5 +53,4 @@ The user sets their weight in the profile and picks a workout intensity.
 - User authentication and cloud sync
 - Leaderboard and social features
 - Smartwatch integration and accelerometer auto-rep counting
-- Workout templates
-- Progress charts and personal records 
+- Progress charts and personal records
