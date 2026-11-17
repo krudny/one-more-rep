@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { useNow } from '@/hooks/useNow/useNow';
 import { estimateWorkoutCalories } from '@/lib/calories/calories';
+import { flags } from '@/lib/features/features';
 import type { Intensity, WorkoutExercise } from '@/lib/types';
 import { getElapsedMs } from '@/lib/workout/workout';
 import { areAllWorkoutSetsDone } from '@/lib/workoutMutations/workoutMutations';
@@ -35,9 +36,11 @@ export function useWorkoutScreen(): UseWorkoutScreenResult {
     restTimer.stop();
     finishingRef.current = true;
     const savedWorkout = finishWorkout();
-    if (savedWorkout) {
+    if (savedWorkout && flags.history) {
       router.replace(`/history/${savedWorkout.id}`);
+      return;
     }
+    router.dismissTo('/');
   };
 
   const handleFinishWorkout = (): void => {
@@ -77,7 +80,9 @@ export function useWorkoutScreen(): UseWorkoutScreenResult {
 
     confirmAction({
       title: 'Finish workout?',
-      message: 'Your workout will be saved to history.',
+      message: flags.history
+        ? 'Your workout will be saved to history.'
+        : 'Your workout will be saved.',
       confirmText: 'Finish',
       cancelText: 'Cancel',
       onConfirm: completeAndSaveWorkout,

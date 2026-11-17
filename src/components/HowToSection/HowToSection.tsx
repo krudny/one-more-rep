@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { ExerciseDemo } from '@/components/ExerciseDemo/ExerciseDemo';
 import { InstructionSteps } from '@/components/InstructionSteps/InstructionSteps';
 import { useExercise } from '@/hooks/useExercise/useExercise';
+import { flags } from '@/lib/features/features';
 import { useColors } from '@/theme';
 import { HOW_TO_HIT_SLOP, HOW_TO_ICON_SIZE } from './HowToSection.constants';
 import { createHowToSectionStyles } from './HowToSection.styles';
@@ -24,7 +25,9 @@ export function HowToSection({ exerciseId }: HowToSectionProps): ReactElement {
     }
     return (
       <>
-        {exercise.images.length > 0 && <ExerciseDemo images={exercise.images} />}
+        {flags.exerciseImages && exercise.images.length > 0 && (
+          <ExerciseDemo images={exercise.images} />
+        )}
         {exercise.instructions.length > 0 ? (
           <InstructionSteps steps={exercise.instructions} />
         ) : (

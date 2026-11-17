@@ -9,6 +9,7 @@ import { SectionTitle } from '@/components/SectionTitle/SectionTitle';
 import { useProfileCatalogRefresh } from '@/hooks/useProfileCatalogRefresh/useProfileCatalogRefresh';
 import { INTENSITY_LABEL, INTENSITY_LIST, INTENSITY_MET } from '@/lib/calories/calories.constants';
 import { estimateWorkoutCalories } from '@/lib/calories/calories';
+import { flags } from '@/lib/features/features';
 import { formatCountdown } from '@/lib/format/format';
 import type { Intensity } from '@/lib/types';
 import { useAppStore } from '@/state/AppStore/AppStore';
@@ -62,57 +63,63 @@ export function ProfileScreenView(): ReactElement {
           placeholderTextColor={colors.MUTED}
           style={styles.input}
         />
-        <Stepper
-          label="Body weight (kg)"
-          value={profile.weightKg}
-          step={BODY_WEIGHT_STEP_KG}
-          decimals={BODY_WEIGHT_DECIMALS}
-          min={BODY_WEIGHT_MIN_KG}
-          onChange={(weightKg: number): void => updateProfile({ weightKg })}
-        />
+        {flags.calories && (
+          <Stepper
+            label="Body weight (kg)"
+            value={profile.weightKg}
+            step={BODY_WEIGHT_STEP_KG}
+            decimals={BODY_WEIGHT_DECIMALS}
+            min={BODY_WEIGHT_MIN_KG}
+            onChange={(weightKg: number): void => updateProfile({ weightKg })}
+          />
+        )}
       </Card>
 
-      <Card style={styles.card}>
-        <SectionTitle>Default intensity</SectionTitle>
-        <View style={styles.chips}>
-          {INTENSITY_LIST.map((intensity: Intensity) => (
-            <Chip
-              key={intensity}
-              label={`${INTENSITY_LABEL[intensity]} (MET ${INTENSITY_MET[intensity]})`}
-              selected={profile.defaultIntensity === intensity}
-              onPress={(): void => updateProfile({ defaultIntensity: intensity })}
-            />
-          ))}
-        </View>
-        <Text style={styles.mutedText}>
-          Calories = MET × body weight (kg) × duration (h). At this setting you burn about{' '}
-          {hourlyCalories} kcal per hour.
-        </Text>
-      </Card>
+      {flags.calories && (
+        <Card style={styles.card}>
+          <SectionTitle>Default intensity</SectionTitle>
+          <View style={styles.chips}>
+            {INTENSITY_LIST.map((intensity: Intensity) => (
+              <Chip
+                key={intensity}
+                label={`${INTENSITY_LABEL[intensity]} (MET ${INTENSITY_MET[intensity]})`}
+                selected={profile.defaultIntensity === intensity}
+                onPress={(): void => updateProfile({ defaultIntensity: intensity })}
+              />
+            ))}
+          </View>
+          <Text style={styles.mutedText}>
+            Calories = MET × body weight (kg) × duration (h). At this setting you burn about{' '}
+            {hourlyCalories} kcal per hour.
+          </Text>
+        </Card>
+      )}
 
-      <Card style={styles.card}>
-        <SectionTitle>Rest timer</SectionTitle>
-        <Stepper
-          label={`Default rest (${formatCountdown(profile.restSeconds * MILLISECONDS_PER_SECOND)})`}
-          value={profile.restSeconds}
-          step={REST_STEP_SECONDS}
-          min={REST_MIN_SECONDS}
-          onChange={(restSeconds: number): void =>
-            updateProfile({ restSeconds: Math.round(restSeconds) })
-          }
-        />
-        {renderToggleRow(
-          'Start rest after each set',
-          profile.autoStartRest,
-          (autoStartRest: boolean): void => updateProfile({ autoStartRest }),
-        )}
-        {renderToggleRow('Sound', profile.restSound, (restSound: boolean): void =>
-          updateProfile({ restSound }),
-        )}
-        {renderToggleRow('Vibration', profile.restVibration, (restVibration: boolean): void =>
-          updateProfile({ restVibration }),
-        )}
-      </Card>
+      {flags.restTimer && (
+        <Card style={styles.card}>
+          <SectionTitle>Rest timer</SectionTitle>
+          <Stepper
+            label={`Default rest (${formatCountdown(profile.restSeconds * MILLISECONDS_PER_SECOND)})`}
+            value={profile.restSeconds}
+            step={REST_STEP_SECONDS}
+            min={REST_MIN_SECONDS}
+            onChange={(restSeconds: number): void =>
+              updateProfile({ restSeconds: Math.round(restSeconds) })
+            }
+          />
+          {renderToggleRow(
+            'Start rest after each set',
+            profile.autoStartRest,
+            (autoStartRest: boolean): void => updateProfile({ autoStartRest }),
+          )}
+          {renderToggleRow('Sound', profile.restSound, (restSound: boolean): void =>
+            updateProfile({ restSound }),
+          )}
+          {renderToggleRow('Vibration', profile.restVibration, (restVibration: boolean): void =>
+            updateProfile({ restVibration }),
+          )}
+        </Card>
+      )}
 
       <Card style={styles.card}>
         <SectionTitle>Data</SectionTitle>

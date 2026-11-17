@@ -1,5 +1,5 @@
-import * as Haptics from 'expo-haptics';
 import { useEffect, useState } from 'react';
+import { playSelectionHaptic } from '@/services/haptics/haptics';
 import type { UseStepperParams, UseStepperResult } from './useStepper.types';
 
 export function useStepper({
@@ -29,7 +29,7 @@ export function useStepper({
     if (nextValue === value) {
       return;
     }
-    Haptics.selectionAsync().catch(() => {});
+    playSelectionHaptic();
     onChange(nextValue);
     setText(String(nextValue));
   };

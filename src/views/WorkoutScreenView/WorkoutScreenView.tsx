@@ -10,6 +10,7 @@ import { Chip } from '@/components/Chip/Chip';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { useWorkoutScreen } from '@/hooks/useWorkoutScreen/useWorkoutScreen';
+import { flags } from '@/lib/features/features';
 import { INTENSITY_LABEL, INTENSITY_LIST, INTENSITY_MET } from '@/lib/calories/calories.constants';
 import { formatDuration } from '@/lib/format/format';
 import type { Intensity, WorkoutExercise } from '@/lib/types';
@@ -66,38 +67,42 @@ export function WorkoutScreenView(): ReactElement | null {
             placeholder="Workout name"
             placeholderTextColor={colors.MUTED}
           />
-          <View style={styles.clockRow}>
-            <View style={styles.clockMetaColumn}>
-              <Text style={[styles.clock, paused && styles.clockPaused]}>
-                {formatDuration(elapsedMs)}
-              </Text>
-              {active.exercises.length > 0 && (
-                <Text style={styles.mutedText}>
-                  ≈ {estimatedCalories} kcal · MET {INTENSITY_MET[active.intensity]} ·{' '}
-                  {bodyWeightKg} kg
+          {flags.stopwatch && (
+            <View style={styles.clockRow}>
+              <View style={styles.clockMetaColumn}>
+                <Text style={[styles.clock, paused && styles.clockPaused]}>
+                  {formatDuration(elapsedMs)}
                 </Text>
-              )}
-            </View>
-            <Button
-              title={paused ? 'Resume' : 'Pause'}
-              icon={paused ? 'play' : 'pause'}
-              variant={ButtonVariants.SECONDARY}
-              onPress={togglePause}
-            />
-          </View>
-          <View style={styles.chips}>
-            {INTENSITY_LIST.map((intensity: Intensity) => (
-              <Chip
-                key={intensity}
-                label={INTENSITY_LABEL[intensity]}
-                selected={active.intensity === intensity}
-                onPress={(): void => updateIntensity(intensity)}
+                {flags.calories && active.exercises.length > 0 && (
+                  <Text style={styles.mutedText}>
+                    ≈ {estimatedCalories} kcal · MET {INTENSITY_MET[active.intensity]} ·{' '}
+                    {bodyWeightKg} kg
+                  </Text>
+                )}
+              </View>
+              <Button
+                title={paused ? 'Resume' : 'Pause'}
+                icon={paused ? 'play' : 'pause'}
+                variant={ButtonVariants.SECONDARY}
+                onPress={togglePause}
               />
-            ))}
-          </View>
+            </View>
+          )}
+          {flags.calories && (
+            <View style={styles.chips}>
+              {INTENSITY_LIST.map((intensity: Intensity) => (
+                <Chip
+                  key={intensity}
+                  label={INTENSITY_LABEL[intensity]}
+                  selected={active.intensity === intensity}
+                  onPress={(): void => updateIntensity(intensity)}
+                />
+              ))}
+            </View>
+          )}
         </Card>
 
-        <RestTimerBar />
+        {flags.restTimer && <RestTimerBar />}
 
         {active.exercises.length === 0 ? (
           <EmptyState

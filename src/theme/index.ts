@@ -1,4 +1,5 @@
 import { useColorScheme } from 'react-native';
+import { flags } from '@/lib/features/features';
 import type { Colors } from './theme.types';
 
 const PALETTE = {
@@ -30,9 +31,13 @@ const PALETTE = {
   },
 } as const;
 
-export function useColors(): Colors {
+export function useIsDarkMode(): boolean {
   const colorScheme = useColorScheme();
-  if (colorScheme === 'dark') {
+  return flags.darkMode && colorScheme === 'dark';
+}
+
+export function useColors(): Colors {
+  if (useIsDarkMode()) {
     return PALETTE.DARK;
   }
   return PALETTE.LIGHT;

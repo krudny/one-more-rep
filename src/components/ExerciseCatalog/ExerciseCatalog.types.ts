@@ -3,7 +3,7 @@ import type { CatalogActionIcon } from '@/components/ExerciseRow/ExerciseRow.typ
 import type { Exercise } from '@/lib/types';
 
 export type ExerciseCatalogProps = {
-  onSelect: (exercise: Exercise) => void;
+  onSelect: ((exercise: Exercise) => void) | null; // null: rows are not tappable
   actionIcon?: CatalogActionIcon;
 };
 

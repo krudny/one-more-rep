@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { useNow } from '@/hooks/useNow/useNow';
+import { flags } from '@/lib/features/features';
 import type { Routine } from '@/lib/types';
 import { getElapsedMs, getWeeklyWorkoutSummary } from '@/lib/workout/workout';
 import { confirmAction } from '@/services/dialogs/dialogs';
@@ -11,7 +12,7 @@ import type { UseHomeScreenResult } from './useHomeScreen.types';
 export function useHomeScreen(): UseHomeScreenResult {
   const { active, workouts, profile, startEmptyWorkout, startWorkoutFromRoutine } = useAppStore();
   const { routines } = useRoutinesStore();
-  const nowTimestamp = useNow(HOME_CLOCK_INTERVAL_MS, active !== null);
+  const nowTimestamp = useNow(HOME_CLOCK_INTERVAL_MS, flags.stopwatch && active !== null);
 
   const weeklySummary = getWeeklyWorkoutSummary(workouts);
   const lastWorkout = workouts[0];

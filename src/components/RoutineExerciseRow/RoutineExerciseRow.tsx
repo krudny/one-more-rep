@@ -4,6 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 import { Card } from '@/components/Card/Card';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { Stepper } from '@/components/Stepper/Stepper';
+import { flags } from '@/lib/features/features';
 import { capitalize } from '@/lib/format/format';
 import { MAX_SET_COUNT, MIN_SET_COUNT } from '@/lib/routine/routine.constants';
 import { useColors } from '@/theme';
@@ -32,6 +33,7 @@ export function RoutineExerciseRow({
       <View style={styles.header}>
         <Pressable
           style={styles.titleLink}
+          disabled={!flags.exerciseDetails}
           onPress={(): void => router.push(`/exercise/${encodeURIComponent(entry.exerciseId)}`)}
         >
           <Text style={styles.name}>{capitalize(entry.name)}</Text>

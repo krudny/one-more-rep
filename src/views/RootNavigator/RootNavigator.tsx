@@ -2,6 +2,7 @@ import { Stack, router } from 'expo-router';
 import type { ReactElement } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { IconButton } from '@/components/IconButton/IconButton';
+import { flags } from '@/lib/features/features';
 import { useAppStore } from '@/state/AppStore/AppStore';
 import { useRoutinesStore } from '@/state/RoutinesStore/RoutinesStore';
 import { useColors } from '@/theme';
@@ -38,14 +39,22 @@ export function RootNavigator(): ReactElement {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="workout" options={{ title: 'Workout' }} />
-      <Stack.Screen name="routine-editor" options={{ title: 'Routine' }} />
-      <Stack.Screen
-        name="pick-exercise"
-        options={{ title: 'Add exercise', presentation: 'modal' }}
-      />
-      <Stack.Screen name="exercise/[id]" options={{ title: 'Exercise' }} />
-      <Stack.Screen name="history/[id]" options={{ title: 'Workout details' }} />
+      <Stack.Protected guard={flags.workout}>
+        <Stack.Screen name="workout" options={{ title: 'Workout' }} />
+        <Stack.Screen
+          name="pick-exercise"
+          options={{ title: 'Add exercise', presentation: 'modal' }}
+        />
+      </Stack.Protected>
+      <Stack.Protected guard={flags.routines}>
+        <Stack.Screen name="routine-editor" options={{ title: 'Routine' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={flags.exerciseDetails}>
+        <Stack.Screen name="exercise/[id]" options={{ title: 'Exercise' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={flags.history}>
+        <Stack.Screen name="history/[id]" options={{ title: 'Workout details' }} />
+      </Stack.Protected>
     </Stack>
   );
 }

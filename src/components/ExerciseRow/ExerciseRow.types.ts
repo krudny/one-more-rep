@@ -6,7 +6,7 @@ export type CatalogActionIcon = (typeof CatalogActionIcons)[keyof typeof Catalog
 
 export type ExerciseRowProps = {
   exercise: Exercise;
-  onPress: (exercise: Exercise) => void;
+  onPress: ((exercise: Exercise) => void) | null; // null: the row is not tappable
   actionIcon: CatalogActionIcon;
 };
 

@@ -69,11 +69,63 @@ src/
   views/                  Screen views (HomeScreenView, WorkoutScreenView, RoutineEditorScreenView, ...)
   components/             UI & domain components (RoutineCard, RoutineExerciseRow, ExerciseCheckbox, Stepper, ...)
   hooks/                  Screen and component logic hooks
-  lib/                    Pure logic: routines, workout mutations, MET calories, formatting, exercise filtering (+ tests)
-  services/               AsyncStorage helpers, dialogs, and exercise catalog API
+  lib/                    Pure logic: feature flags, routines, workout mutations, MET calories, formatting, exercise filtering (+ tests)
+  services/               AsyncStorage helpers, dialogs, haptics and exercise catalog API
   state/                  AppStore, RoutinesStore, RoutineDraft, RestTimer
   theme/                  Colors, spacing, radius
 ```
+
+## Feature flags
+
+Every screen and feature can be switched on or off in code, in one file: [`src/lib/features/features.constants.ts`](src/lib/features/features.constants.ts). Change a value to `false` and that screen or feature is gone from the app.
+
+```ts
+export const FEATURES = {
+  history: true, // History tab, workout details, "Last workout" card
+  restTimer: true, // rest countdown and its Profile settings
+  calories: false, // <- no kcal, intensity or body weight anywhere
+  // ...
+} as const;
+```
+
+<p align="center">
+  <img src="docs/screenshots/feature-flags-minimal-workout.png" width="220" alt="Workout with stopwatch, calories, rest timer, weights and instructions turned off" />
+  <img src="docs/screenshots/feature-flags-no-workout.png" width="220" alt="Home with the workout screen turned off" />
+</p>
+
+| Flag              | What it controls                                                           |
+| ----------------- | -------------------------------------------------------------------------- |
+| `workout`         | Active workout screen and exercise picker                                  |
+| `routines`        | "My routines" on Home, routine editor, "Save as routine" (needs `workout`) |
+| `exercises`       | Exercises tab                                                              |
+| `exerciseDetails` | Exercise details screen                                                    |
+| `history`         | History tab, workout details, "Last workout" card                          |
+| `profile`         | Profile tab                                                                |
+| `stopwatch`       | Workout time and pause, durations everywhere (needs `workout`)             |
+| `restTimer`       | Rest countdown and its Profile settings (needs `workout`)                  |
+| `calories`        | kcal estimate, intensity, body weight (needs `stopwatch`)                  |
+| `weightTracking`  | Weight per set and volume; off = reps only (needs `workout`)               |
+| `instructions`    | "How to do it" steps                                                       |
+| `exerciseImages`  | Thumbnails and demo images                                                 |
+| `catalogSearch`   | Catalog search box                                                         |
+| `catalogFilters`  | Body part / muscle / equipment filters                                     |
+| `weeklyStats`     | "Last 7 days" card on Home                                                 |
+| `haptics`         | Haptic feedback on steppers and completed sets                             |
+| `darkMode`        | Follow the system dark theme; off = always light                           |
+
+A flag is off whenever a flag it needs is off (`FEATURE_REQUIREMENTS` in the same file). Screens behind a disabled flag are not registered with the router, so they can't be opened by navigation or deep links; a finished workout goes back to Home when `history` is off.
+
+Usage:
+
+```tsx
+import { flags } from '@/lib/features/features';
+
+{
+  flags.restTimer && <RestTimerBar />;
+}
+```
+
+To add a flag, add it to `FEATURES` (and to `FEATURE_REQUIREMENTS` if it needs another flag), then gate the UI with `flags.yourFlag`.
 
 ## Exercise data
 

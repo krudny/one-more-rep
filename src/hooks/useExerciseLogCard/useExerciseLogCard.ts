@@ -1,7 +1,8 @@
-import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
+import { flags } from '@/lib/features/features';
 import type { WorkoutExercise, WorkoutSet } from '@/lib/types';
 import { areAllExerciseSetsDone } from '@/lib/workoutMutations/workoutMutations';
+import { playSuccessHaptic } from '@/services/haptics/haptics';
 import { useAppStore } from '@/state/AppStore/AppStore';
 import { useRestTimer } from '@/state/RestTimer/RestTimer';
 import type { UseExerciseLogCardResult } from './useExerciseLogCard.types';
@@ -25,8 +26,8 @@ export function useExerciseLogCard(entry: WorkoutExercise): UseExerciseLogCardRe
     }
     updateSet(entry.id, selectedSet.id, { done: true });
     setSelectedId(null);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
-    if (profile.autoStartRest) {
+    playSuccessHaptic();
+    if (flags.restTimer && profile.autoStartRest) {
       restTimer.start();
     }
   };

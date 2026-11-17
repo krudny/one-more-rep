@@ -10,6 +10,7 @@ import { ButtonVariants } from '@/components/Button/Button.constants';
 import { Card } from '@/components/Card/Card';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { useExerciseLogCard } from '@/hooks/useExerciseLogCard/useExerciseLogCard';
+import { flags } from '@/lib/features/features';
 import { capitalize } from '@/lib/format/format';
 import type { WorkoutSet } from '@/lib/types';
 import { useColors } from '@/theme';
@@ -50,6 +51,7 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
         <ExerciseCheckbox checked={allSetsDone} onToggle={handleToggleExerciseDone} />
         <Pressable
           style={styles.titleLink}
+          disabled={!flags.exerciseDetails}
           onPress={(): void => router.push(`/exercise/${encodeURIComponent(entry.exerciseId)}`)}
         >
           <Text style={styles.name}>{capitalize(entry.name)}</Text>
@@ -58,7 +60,7 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
         <IconButton icon="trash-outline" label="Remove exercise" onPress={handleRemoveExercise} />
       </View>
 
-      <HowToSection exerciseId={entry.exerciseId} />
+      {flags.instructions && <HowToSection exerciseId={entry.exerciseId} />}
 
       <View style={styles.setsList}>
         {entry.sets.map((workoutSet: WorkoutSet, index: number) => {
@@ -71,7 +73,8 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
             >
               <Text style={styles.setNo}>Set {index + 1}</Text>
               <Text style={styles.setValue}>
-                {workoutSet.reps} reps{workoutSet.weight > 0 ? ` × ${workoutSet.weight} kg` : ''}
+                {workoutSet.reps} reps
+                {flags.weightTracking && workoutSet.weight > 0 ? ` × ${workoutSet.weight} kg` : ''}
               </Text>
               <Pressable
                 hitSlop={CHECK_HIT_SLOP}
@@ -104,13 +107,15 @@ export function ExerciseLogCard({ entry }: ExerciseLogCardProps): ReactElement {
             value={selectedSet.reps}
             onChange={(reps: number): void => handleUpdateSet(selectedSet.id, { reps })}
           />
-          <Stepper
-            label="Weight (kg)"
-            value={selectedSet.weight}
-            step={WEIGHT_STEP_KG}
-            decimals={WEIGHT_DECIMALS}
-            onChange={(weight: number): void => handleUpdateSet(selectedSet.id, { weight })}
-          />
+          {flags.weightTracking && (
+            <Stepper
+              label="Weight (kg)"
+              value={selectedSet.weight}
+              step={WEIGHT_STEP_KG}
+              decimals={WEIGHT_DECIMALS}
+              onChange={(weight: number): void => handleUpdateSet(selectedSet.id, { weight })}
+            />
+          )}
           {!selectedSet.done && (
             <Button
               title="Complete set"

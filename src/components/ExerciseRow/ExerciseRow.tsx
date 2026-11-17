@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { memo, type ReactElement } from 'react';
 import { Pressable, Text, View, type PressableStateCallbackType } from 'react-native';
+import { flags } from '@/lib/features/features';
 import { capitalize } from '@/lib/format/format';
 import { useColors } from '@/theme';
 import { ACTION_ICON_SIZE, CatalogActionIcons } from './ExerciseRow.constants';
@@ -19,19 +20,22 @@ function ExerciseRowComponent({ exercise, onPress, actionIcon }: ExerciseRowProp
 
   return (
     <Pressable
-      onPress={(): void => onPress(exercise)}
+      disabled={onPress === null}
+      onPress={(): void => onPress?.(exercise)}
       style={({ pressed }: PressableStateCallbackType) => [
         styles.row,
         getExerciseRowOpacityStyle(pressed),
       ]}
     >
-      <Image
-        source={exercise.images[0]}
-        style={styles.thumb}
-        contentFit="cover"
-        cachePolicy="disk"
-        recyclingKey={exercise.id}
-      />
+      {flags.exerciseImages && (
+        <Image
+          source={exercise.images[0]}
+          style={styles.thumb}
+          contentFit="cover"
+          cachePolicy="disk"
+          recyclingKey={exercise.id}
+        />
+      )}
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={2}>
           {capitalize(exercise.name)}
@@ -40,7 +44,9 @@ function ExerciseRowComponent({ exercise, onPress, actionIcon }: ExerciseRowProp
           {metadata}
         </Text>
       </View>
-      <Ionicons name={actionIcon} size={ACTION_ICON_SIZE[actionIcon]} color={iconColor} />
+      {onPress !== null && (
+        <Ionicons name={actionIcon} size={ACTION_ICON_SIZE[actionIcon]} color={iconColor} />
+      )}
     </Pressable>
   );
 }

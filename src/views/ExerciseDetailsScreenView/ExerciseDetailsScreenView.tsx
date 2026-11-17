@@ -9,6 +9,7 @@ import { Chip } from '@/components/Chip/Chip';
 import { EmptyState } from '@/components/EmptyState/EmptyState';
 import { SectionTitle } from '@/components/SectionTitle/SectionTitle';
 import { useExercise } from '@/hooks/useExercise/useExercise';
+import { flags } from '@/lib/features/features';
 import { capitalize } from '@/lib/format/format';
 import { useAppStore } from '@/state/AppStore/AppStore';
 import { useColors } from '@/theme';
@@ -52,10 +53,12 @@ export function ExerciseDetailsScreenView({
     <>
       <Stack.Screen options={{ title: capitalize(exercise.name) }} />
       <ScrollView contentContainerStyle={styles.container}>
-        {exercise.images.length > 0 && <ExerciseDemo images={exercise.images} />}
+        {flags.exerciseImages && exercise.images.length > 0 && (
+          <ExerciseDemo images={exercise.images} />
+        )}
         <Text style={styles.title}>{capitalize(exercise.name)}</Text>
 
-        {active && (
+        {flags.workout && active && (
           <Button
             title="Add to current workout"
             icon="add"
@@ -75,7 +78,7 @@ export function ExerciseDetailsScreenView({
           {renderTagGroup('Category', exercise.category ? [exercise.category] : [])}
         </Card>
 
-        {exercise.instructions.length > 0 && (
+        {flags.instructions && exercise.instructions.length > 0 && (
           <Card style={styles.instructionsCard}>
             <SectionTitle>How to do it</SectionTitle>
             <InstructionSteps steps={exercise.instructions} />

@@ -19,6 +19,7 @@ import {
   FILTER_LABELS,
 } from '@/hooks/useExerciseCatalog/useExerciseCatalog.constants';
 import type { FilterKey } from '@/hooks/useExerciseCatalog/useExerciseCatalog.types';
+import { flags } from '@/lib/features/features';
 import { capitalize } from '@/lib/format/format';
 import type { Exercise } from '@/lib/types';
 import { useColors } from '@/theme';
@@ -82,41 +83,45 @@ export function ExerciseCatalog({
   return (
     <View style={styles.root}>
       <View style={styles.header}>
-        <View style={styles.searchBox}>
-          <Ionicons name="search" size={SEARCH_ICON_SIZE} color={colors.MUTED} />
-          <TextInput
-            value={search}
-            onChangeText={setSearch}
-            placeholder={total > 0 ? `Search ${total} exercises` : 'Search exercises'}
-            placeholderTextColor={colors.MUTED}
-            style={styles.searchInput}
-            autoCorrect={false}
-            returnKeyType="search"
-            clearButtonMode="while-editing"
-          />
-        </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.chips}
-        >
-          {FILTER_KEY_LIST.map((filterKey: FilterKey) => {
-            const selectedValue = filters[filterKey];
-            const label = selectedValue
-              ? `${FILTER_LABELS[filterKey]}: ${capitalize(selectedValue)}`
-              : `${FILTER_LABELS[filterKey]} ▾`;
-            return (
-              <Chip
-                key={filterKey}
-                label={label}
-                selected={openFilter === filterKey || Boolean(selectedValue)}
-                onPress={(): void => toggleOpenFilter(filterKey)}
-              />
-            );
-          })}
-          {hasActiveFilters && <Chip label="Clear" onPress={clearFilters} />}
-        </ScrollView>
-        {openFilter && (
+        {flags.catalogSearch && (
+          <View style={styles.searchBox}>
+            <Ionicons name="search" size={SEARCH_ICON_SIZE} color={colors.MUTED} />
+            <TextInput
+              value={search}
+              onChangeText={setSearch}
+              placeholder={total > 0 ? `Search ${total} exercises` : 'Search exercises'}
+              placeholderTextColor={colors.MUTED}
+              style={styles.searchInput}
+              autoCorrect={false}
+              returnKeyType="search"
+              clearButtonMode="while-editing"
+            />
+          </View>
+        )}
+        {flags.catalogFilters && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.chips}
+          >
+            {FILTER_KEY_LIST.map((filterKey: FilterKey) => {
+              const selectedValue = filters[filterKey];
+              const label = selectedValue
+                ? `${FILTER_LABELS[filterKey]}: ${capitalize(selectedValue)}`
+                : `${FILTER_LABELS[filterKey]} ▾`;
+              return (
+                <Chip
+                  key={filterKey}
+                  label={label}
+                  selected={openFilter === filterKey || Boolean(selectedValue)}
+                  onPress={(): void => toggleOpenFilter(filterKey)}
+                />
+              );
+            })}
+            {hasActiveFilters && <Chip label="Clear" onPress={clearFilters} />}
+          </ScrollView>
+        )}
+        {flags.catalogFilters && openFilter && (
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
